@@ -4,7 +4,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class MenuService {
-    // Mapa de opciones de conversión utilizando LinkedHashMap
     public static final Map<String, String> OPCIONES_CONVERSION = new LinkedHashMap<>() {{
         put("1", "Dólar >>> Peso argentino (ARS)");
         put("2", "Peso argentino (ARS) >>> Dólar");
@@ -14,15 +13,20 @@ public class MenuService {
         put("6", "Peso colombiano (COP) >>> Dólar");
         put("7", "Dólar >>> Boliviano boliviano (BOB)");
         put("8", "Peso chileno (CLP) >>> Dólar");
-        put("9", "Salir");
+        put("9", "Dólar >>> Euro (EUR)");
+        put("10", "Euro (EUR) >>> Dólar");
+        put("11", "Dólar >>> Libra esterlina (GBP)");
+        put("12", "Libra esterlina (GBP) >>> Dólar");
+        put("13", "Salir");
     }};
 
-    // Método para mostrar el menú de opciones al usuario
+
+    // Método para mostrar el menú de opciones
     public void mostrarMenu() {
         System.out.println("*****************************************************");
         System.out.println("Bienvenido al Conversor de Moneda");
-        System.out.println();
-        // Recorrer y mostrar las opciones del menú
+        System.out.println("Menú de opciones:");
+        // Recorrer y mostrar las opciones
         for (Map.Entry<String, String> entry : OPCIONES_CONVERSION.entrySet()) {
             System.out.println(entry.getKey() + ") " + entry.getValue());
         }
