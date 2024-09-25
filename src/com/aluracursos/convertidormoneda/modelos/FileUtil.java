@@ -5,15 +5,17 @@ import java.io.IOException;
 import java.util.List;
 
 public class FileUtil {
-    // Método para guardar datos en un archivo
+    // Método para guardar los datos en un archivo de texto
     public static void guardarDatosEnArchivo(String nombreArchivo, List<String> datos) {
-        // Uso de try-with-resources para cerrar el archivo automáticamente
+        // Utilizamos try-with-resources para asegurar que el archivo se cierre automáticamente
         try (FileWriter writer = new FileWriter(nombreArchivo)) {
+            // Escribir cada línea en el archivo
             for (String linea : datos) {
-                writer.write(linea + System.lineSeparator()); // Escribir cada línea en el archivo
+                writer.write(linea + System.lineSeparator());
             }
             System.out.println("Datos guardados exitosamente en " + nombreArchivo);
         } catch (IOException e) {
+            // Manejo de errores al intentar guardar el archivo
             System.out.println("Error al guardar los datos en el archivo: " + e.getMessage());
         }
     }
