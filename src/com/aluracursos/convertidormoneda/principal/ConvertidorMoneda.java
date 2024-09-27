@@ -1,11 +1,7 @@
 package com.aluracursos.convertidormoneda.principal;
 
-import com.aluracursos.convertidormoneda.modelos.ApiResponse;
-import com.aluracursos.convertidormoneda.modelos.ApiService;
-import com.aluracursos.convertidormoneda.modelos.ConversionService;
-import com.aluracursos.convertidormoneda.modelos.MenuService;
-import com.aluracursos.convertidormoneda.util.FileUtil;
-import com.aluracursos.convertidormoneda.util.FileReaderUtil;
+import com.aluracursos.convertidormoneda.modelos.*;
+import com.aluracursos.convertidormoneda.util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,13 +32,24 @@ public class ConvertidorMoneda {
         while (true) {
             // Mostrar el menú de opciones
             menuService.mostrarMenu();
-            String opcion = scanner.nextLine();
+
+            String opcion = "";
+            // Manejo de excepción para la entrada de la opción
+            try {
+                opcion = scanner.nextLine();
+                if (opcion.isEmpty()) {
+                    throw new IllegalArgumentException("La opción no puede estar vacía.");
+                }
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+                continue;
+            }
 
             // Salir del programa si la opción es "13"
             if (opcion.equals("13")) {
                 System.out.println("¡Gracias por usar el Conversor de Moneda! Hasta luego.");
                 // Guardar el historial en un archivo antes de salir
-                FileUtil.guardarDatosEnArchivo("historial_conversiones.txt", historialConversiones);
+                com.aluracursos.convertidormoneda.util.FileUtil.guardarDatosEnArchivo("historial_conversiones.txt", historialConversiones);
                 break;
             }
 
@@ -52,9 +59,25 @@ public class ConvertidorMoneda {
                 continue;
             }
 
-            // Solicitar la cantidad a convertir
-            System.out.println("Ingrese la cantidad a convertir: ");
-            double cantidad = Double.parseDouble(scanner.nextLine());
+            double cantidad = 0;
+            // Manejo de excepción para la entrada de la cantidad
+            try {
+                System.out.println("Ingrese la cantidad a convertir: ");
+                String cantidadStr = scanner.nextLine();
+                if (cantidadStr.isEmpty()) {
+                    throw new IllegalArgumentException("La cantidad no puede estar vacía.");
+                }
+                cantidad = Double.parseDouble(cantidadStr);
+                if (cantidad <= 0) {
+                    throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Ingrese un número válido.");
+                continue;
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+                continue;
+            }
 
             // Realizar la conversión y obtener el resultado con los detalles
             String resultadoConversion = conversionService.realizarConversion(opcion, cantidad, apiResponse);
@@ -72,6 +95,6 @@ public class ConvertidorMoneda {
 
         // Leer y mostrar el historial de conversiones al finalizar
         System.out.println("Leyendo el historial de conversiones...");
-        FileReaderUtil.leerDatosDeArchivo("historial_conversiones.txt");
+        com.aluracursos.convertidormoneda.util.FileReaderUtil.leerDatosDeArchivo("historial_conversiones.txt");
     }
 }
